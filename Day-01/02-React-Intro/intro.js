@@ -1,7 +1,10 @@
 var App = React.createClass({
     btnClick : function(){
-        var value = parseInt(this.refs.txtStart.value,10);
-        this.setState({start : value});
+        var me = this;
+//        setTimeout(function() {
+            var value = parseInt(this.refs.txtStart.value,10);
+            this.setState({start : value});
+//        }, 1000);
     },
     getInitialState : function(){
         console.log("getInitialState");
@@ -15,7 +18,7 @@ var App = React.createClass({
                 <h1>React App Demo</h1>
                 <label>Start :</label>
                 <input type="text" ref="txtStart"/>
-                <input type="button" onClick={this.btnClick} value="Test"/>
+                <input type="button" onClick={this.btnClick} value="Set Start Value"/>
                 <Spinner start={this.state.start}></Spinner>
             </div>
         )
@@ -27,6 +30,13 @@ var Spinner = React.createClass({
         console.log("props -> ", this.props);
         var start = this.props.start || 0;
         return {count : start};
+    },
+    componentWillReceiveProps: function(newProps) {
+        console.log('new props');
+        if (newProps.start != this.state.count) {
+            this.setState({count:newProps.start });
+        }
+
     },
     increment : function(){
         this.setState({count : ++this.state.count});
@@ -42,8 +52,12 @@ var Spinner = React.createClass({
                 <h3>Spinner</h3>
                 <input type="button" value="Up" onClick={this.increment}/>
                 <input type="button" value="Down" onClick={this.decrement}/>
-                <div>{this.state.count}</div>
+                <div>Start: {this.props.start}</div>
+                <div>Count: {this.state.count}</div>
             </div>
         )
     }
 });
+
+
+ReactDOM.render(<App> </App>, document.getElementById("content"));
