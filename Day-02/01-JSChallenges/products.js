@@ -4,7 +4,7 @@ var products = [
     {id : 4, name : "Den", cost : 90, units : 30, category : 1},
     {id : 2, name : "Ten", cost : 10, units : 60, category : 2},
     {id : 9, name : "Zen", cost : 100, units : 10, category : 1},
-]
+];
 
 function print(title, fn){
     console.group(title);
@@ -51,7 +51,7 @@ print("Sort", function(){
                         list[j] = temp;
                     }
            }
-        };
+        }
         print("Products By cost", function(){
             //Use the 'Sort' function above to sort the products by cost
             Sort(products, "cost");
@@ -73,7 +73,7 @@ print("Sort", function(){
                         list[j] = temp;
                     }
            }
-        };
+        }
         print("Products By value [value = cost * units]", function(){
             //Use the 'Sort' function above to sort the products by cost
             var productComparerByValue = function(p1, p2){
@@ -82,7 +82,7 @@ print("Sort", function(){
                 if (p1Value < p2Value) return -1;
                 if (p1Value === p2Value) return 0;
                 return 1;
-            }
+            };
             Sort(products, productComparerByValue);
             console.table(products);
         });
@@ -100,11 +100,11 @@ print("Filter", function(){
     function negate(fn){
         return function(){
             return !fn.apply(this, arguments);
-        }
+        };
     }
     var category1ProductCriteria = function(product){
         return product.category === 1;
-    }
+    };
     //Filter all category-1 products
     print("Category 1 products", function(){
         var category1Products = filter(products, category1ProductCriteria);
@@ -121,7 +121,7 @@ print("Filter", function(){
     //Filter all costly products (cost > 50)
     var costlyProductCriteria = function(product){
         return product.cost > 50;
-    }
+    };
     print("Costly products (cost > 50)", function(){
 
         var costlyProducts = filter(products, costlyProductCriteria);
@@ -137,6 +137,25 @@ print("Filter", function(){
     });
 });
 
+print("Min", function(){
+    function min(list, key) {
+        var minIndex = 0,
+            minValue;
+        for (var i = 0; i < list.length; i++) {
+            if (i === 0) {
+                minValue = list[i][key];
+            }
+            if (list[i][key] < minValue) {
+                minIndex = i;
+                minValue = list[i][key];
+            }
+        }
+        return [list[minIndex]];
+    }
+    print("Min of id", function() {
+        console.table(min(products, 'id'));
+    });
+});
 print("GroupBy", function(){
     function groupBy(list, keySelector){
         var result = {};
@@ -147,7 +166,7 @@ print("GroupBy", function(){
             result[key].push(item);
         }
         return result;
-    };
+    }
     function printGroup(groupedObj){
         for(var key in groupedObj){
             print("Key - " + key, function(){
